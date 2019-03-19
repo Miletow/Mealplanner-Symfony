@@ -1,0 +1,44 @@
+<div id="PageThree" class="mx-auto w-50 p-5 bg-light mainblock">
+        <p>Meal Planner</p>
+
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#CollapseAddtoDB" aria-expanded="false" aria-controls="collapseExample">
+    Add food to database
+  </button><button class="btn btn-primary ml-3" type="button" data-toggle="collapse" data-target="#CollapseCreateDay" aria-expanded="false" aria-controls="collapseExample">
+    Create Day Profile
+  </button>
+  <div class="collapse mt-2" id="CollapseAddtoDB">
+        <label for="usr">Add food to database, Values per 100Gram</label>
+                    <input type="text" class="form-control" placeholder="Name" id="foodName">
+                    <input type="text" class="form-control" placeholder="Calories" id="foodCalories">
+                    <input type="text" class="form-control" placeholder="Protein" id="foodProtein">
+                    <input type="text" class="form-control" placeholder="Carbohydrates" id="foodCarbohydrates">
+                    <input type="text" class="form-control" placeholder="Fat" id="foodFat">
+              <button type="button" class="btn btn-success" id="AddtoDB">Add</button>
+</div>
+              <!-- <button type="button" class="btn btn-success" id="CreateDay">Create Day Profile</button> -->
+
+              
+  <div class="collapse mt-1" id="CollapseCreateDay">
+       <div class="Meals" id="Meals">
+       <div class="Meal">
+       <p>Day profile name: </p>
+       <input type="text" id="DayProfileName">
+        <p>Meal 1:</p>
+        <select class="form-control col-md-5 foodSelect d-inline"  name="" id="foodSelect">
+        </select> 
+        <input type="text" class="form-control col-md-5 d-inline Amount" placeholder="Amount">
+        </div>
+
+        </div>
+        <button type="button" class="btn btn-success mt-2" id="CreateDay">Create Day Profile</button>
+        <button type="button" class="btn btn-warning mt-2" id="AddIngredient">Add Ingredient</button>
+        <button type="button" class="btn btn-warning mt-2" id="AddMeal">Add Meal</button>
+        
+        <br>
+        <br>
+        <a class="font-weight-bold mr-4" id="DailyCalories">Calories</a>
+        <a class="font-weight-bold mr-4" id="DailyProtein">Protein</a>
+        <a class="font-weight-bold mr-4" id="DailyCarbohydrates">Carbohydrates</a>
+        <a class="font-weight-bold mr-4" id="DailyFat">Fat</a>
+  </div>
+        </div>

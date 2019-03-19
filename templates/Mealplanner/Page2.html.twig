@@ -1,0 +1,35 @@
+<div id="PageTwo" class="mx-auto w-50 p-5 bg-light mainblock">
+              <div class="form-group">
+                    <label for="usr">Daily calories:</label>
+                    <input type="text" class="form-control" id="calories">
+                    <label for="usr">Daily weight:</label>
+                    <input type="text" class="form-control" id="DailyWeight">
+                    <button type="button" class="btn btn-success" id="SubmitCalories">Submit</button>
+
+                  </div>
+                  <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                  <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+
+<!-- <span id="timeToRender"></span> -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+
+    // SubmitCalories
+    $("#SubmitCalories").click(function(){
+        let data = $("#calories").val();
+        let data2 = $("#DailyWeight").val();
+        console.log(data);
+        if(data > 0 && data2 >0){
+        $.post('/Ajax',
+        {
+          data: data,
+          data2: data2
+        },
+        function(data,status){
+          console.log("Data: " + data + "\nStatus: " + status);
+        });
+
+    }
+    });
+</script>
+        </div>

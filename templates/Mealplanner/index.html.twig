@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sympharet Articles{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">4</a></li>
+  </ul>
+</div>
+    
+        
+        
+{% include 'Mealplanner/Page1.html.twig' %}
+{% include 'Mealplanner/Page2.html.twig' %}
+{% include 'Mealplanner/Page3.html.twig' %}
+{% include 'Mealplanner/Page4.html.twig' %}
+
+{% endblock %}
+
+{% block javascripts %}
+<script src="/js/main.js"></script>
+{% endblock %}
