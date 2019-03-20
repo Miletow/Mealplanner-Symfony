@@ -328,11 +328,11 @@ function createMealDayObject(){
 function CreateDayProfileCard(data){
 
     MealDiv = document.getElementById("MealProfiles");
-
+    var DayName = data[0].Dayname;
     DayDiv = document.createElement("div");
-    DayDiv.classList.add("card");
+    DayDiv.classList.add("DayProfile");
 
-    p = document.createElement("p").innerHTML = "Day of Meals";
+    p = document.createElement("p").innerHTML = DayName;
     DayDiv.append(p);
 
     var Calories = 0;
@@ -342,10 +342,11 @@ function CreateDayProfileCard(data){
 
     data.forEach(element => {
         var Ingredient = document.createElement('div');
-        Ingredient.classList.add("card-body");
+        Ingredient.classList.add("Ingredient");
+
 
         var FoodSource = getIngredient(element.foodId);
-        console.log(FoodSource.FoodName);
+        DayName = FoodSource.Dayname;
         Calories += getMacroAmount(FoodSource.Calories, element.Amount);
         Protein += getMacroAmount(FoodSource.Protein, element.Amount);
         Carbohydrates += getMacroAmount(FoodSource.Carbohydrates, element.Amount);
@@ -353,6 +354,7 @@ function CreateDayProfileCard(data){
 
         var FoodName = document.createElement('a');
         FoodName.innerHTML = FoodSource.FoodName+ " ";
+
         
         var Meal = document.createElement('a');
         Meal.innerHTML = "Meal: " + element.Meal + " ";
@@ -371,6 +373,11 @@ function CreateDayProfileCard(data){
         ProteinText = document.createElement('a');
         CarbohydrateText = document.createElement('a');
         FatText = document.createElement('a');
+        CaloriesText.classList.add("MacroResult");
+        ProteinText.classList.add("MacroResult");
+        CarbohydrateText.classList.add("MacroResult");
+        FatText.classList.add("MacroResult");
+
 
         CaloriesText.innerHTML = " Calories: " + Calories;
         ProteinText.innerHTML = " Protein: " + Protein;

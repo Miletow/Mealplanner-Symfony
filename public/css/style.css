@@ -153,3 +153,22 @@ h1{
 		padding: 0px 4px;
 		color: #ffffff;
 	}
+
+
+.DayProfile{
+  background:yellow;
+  padding:20px;
+  margin-top:5px;
+}
+.DayProfile a{
+  font-size: 15px;
+}
+
+.Ingredient{
+  background: gray;
+}
+
+.MacroResult{
+  font-weight: bold;
+
+}

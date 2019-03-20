@@ -20,17 +20,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class MealplanController extends Controller{
 
     /**
-         * @Route("/Ajax", name="Tibia")
-         * Method({"GET"})
-         */
-        public function ajaxAction(Request $request){
+     * @Route("/Ajax", name="Tibia")
+     * Method({"GET"})
+     */
+    public function ajaxAction(Request $request){
 
-            if ($request->isXMLHttpRequest()) {         
-                return new JsonResponse(array('data' => 'this is a json response'));
-            }
-        
-            return new Response('This is not ajax!', 400);
+        if ($request->isXMLHttpRequest()) {         
+            return new JsonResponse(array('data' => 'this is a json response'));
         }
+
+        return new Response('This is not ajax!', 400);
+    }
 
     /**
      * @Route("/AddtoDB", name="AddtoDB")
@@ -115,6 +115,11 @@ class MealplanController extends Controller{
 
         $maxValue++;
 
+        $day = new Days();
+        $day->setName($_POST['name']);
+        $day->setExtraID($maxValue);
+
+
 
         if ($request->isXMLHttpRequest()) {
             $content = $request->getContent();
@@ -133,6 +138,8 @@ class MealplanController extends Controller{
                 $em->flush();
 
                 }
+                $em->persist($day);
+                $em->flush();
                 
             }
     
@@ -154,6 +161,10 @@ class MealplanController extends Controller{
         ->getRepository(DayProfile::class)
         ->findAll();
 
+        $DayNames = $this->getDoctrine() 
+        ->getRepository(Days::class)
+        ->findAll();
+
         $Number = 0;
         $Days = array();
         foreach ($DayList as $key) {
@@ -165,12 +176,13 @@ class MealplanController extends Controller{
             $jsonData = array();  
             $idx = 0;  
 
-            foreach ($Days as $Day) {
+            foreach ($DayNames as $Day) {
                 $DayArray = array();
                 foreach($DayList as $Dayitem) {  
 
-                    if($Day == $Dayitem->getDay()){ 
+                    if($Day->getExtraID() == $Dayitem->getDay()){ 
                         $temp = array(
+                            'Dayname' => $Day->getName(),
                             'DayProfile' => $Dayitem->getDay(),  
                             'foodId' => $Dayitem->getFoodId(),  
                             'Meal' => $Dayitem->getMeal(),
@@ -187,4 +199,20 @@ class MealplanController extends Controller{
          
         }
        }
+
+    /**
+     *@Route("/Mealplanner", name="Mealplanner")
+     * 
+     */
+
+     public function Mealplanner(){
+        $Mealplan = $this->getDoctrine()->getRepository
+        (DayProfile::class)->findAll();
+
+        $Days = $this->getDoctrine()->getRepository
+        (Days::class)->findAll();
+
+        return $this->render('Mealplanner/Mealplanner.html.twig', array
+        ('meals' => $Mealplan));
+     }
 }

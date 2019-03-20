@@ -48,7 +48,7 @@ class Days
 
     public function setExtraID($id)
     {
-        $this->extraID = $name;
+        $this->extraID = $id;
     }
 
 

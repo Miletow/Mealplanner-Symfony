@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sympharet Articles{% endblock %}
+
+{% block body %}
+
+{% for Day in meals %}
+        <p>{{Day.getDay()}}</p>
+{% endfor %}
+
+{% endblock %}
+
+{% block javascripts %}
+<script src="/js/main.js"></script>
+{% endblock %}
