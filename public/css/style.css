@@ -156,6 +156,9 @@ h1{
 
 
 .DayProfile{
+  display:inline-block;
+  margin-right:5px;
+  width:400px;
   background:yellow;
   padding:20px;
   margin-top:5px;
@@ -171,4 +174,12 @@ h1{
 .MacroResult{
   font-weight: bold;
 
+}
+
+.objectDiv{
+  float:right;
+  background-color:blue;
+  overflow:hidden;
+  color:white;
+  padding: 10px;
 }

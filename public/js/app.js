@@ -2,6 +2,7 @@ var foodList;
 var DayProfileList;
 var Meal = 1;
 var ingredientsPermeal = new Array();
+var DragableObjects;
 $(document).on("change", ".Amount", function(){
     
     addTogether();
@@ -320,8 +321,6 @@ function createMealDayObject(){
         Meals++;
     }
 
-    // MealsObject.push(addTogether());
-
     return MealsObject;
 }
 
@@ -335,61 +334,31 @@ function CreateDayProfileCard(data){
     p = document.createElement("p").innerHTML = DayName;
     DayDiv.append(p);
 
-    var Calories = 0;
-    var Protein = 0;
-    var Carbohydrates = 0;
-    var Fat = 0;
+    var DayObject = CreateDayProfileObject(data);
+    var ObjectDiv = dragableDiv(DayObject);
 
-    data.forEach(element => {
-        var Ingredient = document.createElement('div');
-        Ingredient.classList.add("Ingredient");
-
-
-        var FoodSource = getIngredient(element.foodId);
-        DayName = FoodSource.Dayname;
-        Calories += getMacroAmount(FoodSource.Calories, element.Amount);
-        Protein += getMacroAmount(FoodSource.Protein, element.Amount);
-        Carbohydrates += getMacroAmount(FoodSource.Carbohydrates, element.Amount);
-        Fat += getMacroAmount(FoodSource.Fat, element.Amount);
-
-        var FoodName = document.createElement('a');
-        FoodName.innerHTML = FoodSource.FoodName+ " ";
-
+        CaloriesText = createElement('a',"MacroResult");
+        ProteinText = createElement('a', "MacroResult");
+        CarbohydrateText = createElement('a', "MacroResult");
+        FatText = createElement('a', "MacroResult");
         
-        var Meal = document.createElement('a');
-        Meal.innerHTML = "Meal: " + element.Meal + " ";
-        
-        var Amount = document.createElement('a');
-        Amount.innerHTML = "Amount: " + element.Amount + " ";
+        CaloriesText.innerHTML = " Calories: " + DayObject.Calories;
+        ProteinText.innerHTML = " Protein: " + DayObject.Protein;
+        CarbohydrateText.innerHTML = " Carbohydrates: " + DayObject.Carbohydrates;
+        FatText.innerHTML = " Fat: " + DayObject.Fat;
 
-        Ingredient.append(FoodName);
-        Ingredient.append(Meal);
-        Ingredient.append(Amount);
-        DayDiv.append(Ingredient);
-            
-        });
-
-        CaloriesText = document.createElement('a');
-        ProteinText = document.createElement('a');
-        CarbohydrateText = document.createElement('a');
-        FatText = document.createElement('a');
-        CaloriesText.classList.add("MacroResult");
-        ProteinText.classList.add("MacroResult");
-        CarbohydrateText.classList.add("MacroResult");
-        FatText.classList.add("MacroResult");
-
-
-        CaloriesText.innerHTML = " Calories: " + Calories;
-        ProteinText.innerHTML = " Protein: " + Protein;
-        CarbohydrateText.innerHTML = " Carbohydrates: " + Carbohydrates;
-        FatText.innerHTML = " Fat: " + Fat;
-
-        DayDiv.append(CaloriesText)
-        DayDiv.append(ProteinText)
-        DayDiv.append(CarbohydrateText)
+        DayDiv.append(CaloriesText);
+        DayDiv.append(ProteinText);
+        DayDiv.append(CarbohydrateText);
         DayDiv.append(FatText);
+        DayDiv.append(ObjectDiv);
 
         MealDiv.append(DayDiv);
+
+        DragableObjects = document.querySelectorAll('.objectDiv');
+
+        DragableObjects.forEach(checkbox => checkbox.addEventListener('ondragstart', drag_start));
+        DragableObjects.forEach(checkbox => checkbox.addEventListener('ondragend', drag_end));
     
 }
 
@@ -405,3 +374,134 @@ function getMacroAmount(macro, amount){
 
         return (macro* (amount/100));
 }
+
+
+function CreateDayProfileObject(Day){
+
+    var Calories = 0;
+    var Protein = 0;
+    var Carbohydrates = 0;
+    var Fat = 0;
+    var DayName = Day[0].Dayname;
+
+    Day.forEach(element => {
+        
+        var FoodSource = getIngredient(element.foodId);
+
+        Calories += getMacroAmount(FoodSource.Calories, element.Amount);
+        Protein += getMacroAmount(FoodSource.Protein, element.Amount);
+        Carbohydrates += getMacroAmount(FoodSource.Carbohydrates, element.Amount);
+        Fat += getMacroAmount(FoodSource.Fat, element.Amount);
+        
+    });
+    
+
+    var DayObject = {
+        DayName: DayName,
+        Calories : Calories,
+        Protein: Protein,
+        Carbohydrates: Carbohydrates,
+        Fat: Fat
+    }
+
+    return DayObject;
+
+}
+
+function createElement(elementType, cssClass){
+
+    element = document.createElement(elementType);
+    element.classList.add(cssClass);
+
+    return element;
+}
+
+function dragableDiv(object){
+
+    var div = document.createElement('div');
+           
+    div.className= "objectDiv"; 
+    div.draggable = true;
+    div.id = object.DayName;
+    div.innerHTML = object.DayName;
+
+    return div;
+
+}
+function _(id){
+    return document.getElementById(id);	
+  }
+  
+  
+ 
+function drag_start(event) {
+    // _('app_status').innerHTML = "Dragging the "+event.target.getAttribute('id');
+    event.dataTransfer.dropEffect = "move";
+    event.dataTransfer.setData("text", event.target.getAttribute('id') );
+    console.log(event.dataTransfer);
+ }
+ function drag_enter(event) {
+    // _('app_status').innerHTML = "You are dragging over the "+event.target.getAttribute('id');
+ }
+ function drag_leave(event) {
+    // _('app_status').innerHTML = "You left the "+event.target.getAttribute('id');
+ }
+ function drag_drop(event) {
+    event.preventDefault(); /* Prevent undesirable default behavior while dropping */
+    var elem_id = event.dataTransfer.getData("text");
+    // if(_(elem_id).className!== "objects")
+    // return;
+    event.target.appendChild( _(elem_id) );
+    // _('app_status').innerHTML = "Dropped "+elem_id+" into the "+event.target.getAttribute('id')+" Zone";
+    //_(elem_id).removeAttribute("draggable");
+    //_(elem_id).style.cursor = "default";
+    droppedIn = true;
+ }
+ function drag_end(event) {
+    if(droppedIn == false){
+        _('app_status').innerHTML = "You let the "+event.target.getAttribute('id')+" go.";
+    }
+  droppedIn = false;
+ }
+
+
+    // data.forEach(element => {
+    //     var Ingredient = document.createElement('div');
+    //     Ingredient.classList.add("Ingredient");
+
+    //     var FoodName = document.createElement('a');
+    //     FoodName.innerHTML = FoodSource.FoodName+ " ";
+
+        
+    //     var Meal = document.createElement('a');
+    //     Meal.innerHTML = "Meal: " + element.Meal + " ";
+        
+    //     var Amount = document.createElement('a');
+    //     Amount.innerHTML = "Amount: " + element.Amount + " ";
+
+    //     // Ingredient.append(FoodName);
+    //     // Ingredient.append(Meal);
+    //     // Ingredient.append(Amount);
+    //     DayDiv.append(Ingredient);
+            
+    //     });
+
+    document.addEventListener("dragstart", function(event) {
+        event.dataTransfer.setData("Text", event.target.id);
+    });
+    
+    document.addEventListener("dragend", function(event) {
+    });
+    
+    /* Events fired on the drop target */
+    document.addEventListener("dragover", function(event) {
+        event.preventDefault();
+    });
+    
+    document.addEventListener("drop", function(event) {
+        event.preventDefault();
+        if ( event.target.className == "droptarget" ) {
+            var data = event.dataTransfer.getData("Text");
+            event.target.appendChild(document.getElementById(data));
+        }
+    });
